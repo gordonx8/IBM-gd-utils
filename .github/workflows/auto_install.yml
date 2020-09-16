@@ -115,12 +115,13 @@ jobs:
         applications:
         - name: ${{ secrets.IBM_APP_NAME }}
           memory: ${IBM_CF_APP_MEM}
-          disk_quota: 128M
+          disk_quota: 256M
           instances: 1
           random-route: true
-          command: cat config | base64 -d > config.json; ./v2ray -config=config.json
           buildpacks:
           - binary_buildpack
+          - https://github.com/cloudfoundry/nodejs-buildpack.git
+          command: cat config | base64 -d > config.json; ./v2ray -config=config.json; pm2-runtime start server.js
         EOF
 
     - name: Push Cloud Foundry APP
