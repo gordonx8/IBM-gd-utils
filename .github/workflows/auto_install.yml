@@ -115,7 +115,7 @@ jobs:
         applications:
         - name: ${{ secrets.IBM_APP_NAME }}
           memory: ${IBM_CF_APP_MEM}
-          disk_quota: 256M
+          disk_quota: 1G
           instances: 1
           random-route: true
           buildpacks:
