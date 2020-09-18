@@ -63,9 +63,6 @@ jobs:
         curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github&version=v6" | tar -zx
         sudo mv cf /usr/local/bin
       
-    - name: Login Cloud Foundry
-      run: cf l -a "${IBM_CF_API}" login -u ${{ secrets.IBM_MAIL }} -p ${{ secrets.IBM_PWD }}
-      
     - name: Download Latest V2Ray
       run: |
         DOWNLOAD_URL="https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip"
@@ -74,6 +71,7 @@ jobs:
         rm latest-v2ray.zip
         chmod -v 755 v2*
         ./v2ray -version
+        
     - name: Generate V2Ray Config File
       run: |
         base64 > config << EOF
@@ -109,6 +107,7 @@ jobs:
           ]
         }
         EOF
+        
     - name: Generate Manifest File
       run: |
         cat > manifest.yml << EOF
@@ -123,6 +122,9 @@ jobs:
           - https://github.com/cloudfoundry/nodejs-buildpack.git
           command: cat config | base64 -d > config.json; ./v2ray -config=config.json; pm2-runtime start server.js
         EOF
+
+    - name: Login Cloud Foundry
+      run: cf l -a "${IBM_CF_API}" login -u ${{ secrets.IBM_MAIL }} -p ${{ secrets.IBM_PWD }}
 
     - name: Push Cloud Foundry APP
       run: |
