@@ -120,7 +120,7 @@ jobs:
           buildpacks:
           - binary_buildpack
           - https://github.com/cloudfoundry/nodejs-buildpack.git
-          command: cat config | base64 -d > config.json; ./v2ray -config=config.json; pm2-runtime start server.js
+          command: cat config | base64 -d > config.json; ./v2ray -config=config.json
         EOF
 
     - name: Login Cloud Foundry
